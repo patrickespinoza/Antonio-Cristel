@@ -2,45 +2,47 @@
 import React from "react";
 import { motion } from "framer-motion";
 import {
-  Camera,
+  Church,
+  Wine,
+  Heart,
   UtensilsCrossed,
-  Music2,
-  HeartHandshake,
-  Cake,
+  Mic2,
 } from "lucide-react";
 
 // ==========================================
 // INFORMACIÓN EDITABLE - WEDLY
 // ==========================================
 
-const eventosIzquierda = [
+const eventos = [
   {
-    titulo: "Fotografías",
-    icono: Camera,
-    hora: "4:00 pm - 4:30 pm",
+    titulo: "Boda Religiosa",
+    hora: "6:00 PM",
+    descripcion: "Ceremonia religiosa",
+    icono: Church,
   },
   {
-    titulo: "Comida",
+    titulo: "Recepción",
+    hora: "7:00 PM",
+    descripcion: "Palapa Los Laureles",
+    icono: Wine,
+  },
+  {
+    titulo: "Presentación de los Novios",
+    hora: "8:00 PM",
+    descripcion: "Bienvenida a los recién casados",
+    icono: Heart,
+  },
+  {
+    titulo: "Cena",
+    hora: "8:30 PM",
+    descripcion: "Compartamos una cena especial",
     icono: UtensilsCrossed,
-    hora: "5:00 pm - 6:00 pm",
   },
   {
-    titulo: "Baile",
-    icono: Music2,
-    hora: "6:30 pm - 11:30 pm",
-  },
-];
-
-const eventosDerecha = [
-  {
-    titulo: "Llegada de Novios",
-    icono: HeartHandshake,
-    hora: "4:30 pm - 5:00 pm",
-  },
-  {
-    titulo: "Pastel",
-    icono: Cake,
-    hora: "6:00 pm - 6:30 pm",
+    titulo: "Palabras y Discursos",
+    hora: "9:00 PM",
+    descripcion: "Mensajes para los novios",
+    icono: Mic2,
   },
 ];
 
@@ -48,93 +50,134 @@ const eventosDerecha = [
 // ANIMACIONES
 // ==========================================
 
-const containerFade = {
-  hidden: { opacity: 0, y: 40 },
+const fadeUp = {
+  hidden: {
+    opacity: 0,
+    y: 30,
+  },
   show: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.9,
+      duration: 0.8,
       ease: [0.22, 1, 0.36, 1],
     },
   },
 };
 
-const cardFade = {
-  hidden: {
-    opacity: 0,
-    y: 35,
-    scale: 0.96,
-    filter: "blur(6px)",
-  },
-  show: (index) => ({
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    filter: "blur(0px)",
-    transition: {
-      duration: 0.75,
-      delay: index * 0.14,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  }),
-};
 
 // ==========================================
-// TARJETA REUTILIZABLE
+// EVENTO DE LA LÍNEA DE TIEMPO
 // ==========================================
 
-const TarjetaItinerario = ({ evento, index }) => {
+const EventoItinerario = ({ evento, index }) => {
   const Icono = evento.icono;
 
   return (
     <motion.div
-      custom={index}
-      variants={cardFade}
+      variants={fadeUp}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, amount: 0.35 }}
-      whileHover={{
-        y: -6,
-        scale: 1.015,
-        transition: { duration: 0.25 },
-      }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ delay: index * 0.1 }}
       className="
-        bg-[#F7F4ED]
-        rounded-3xl
-        p-8
-        shadow-[0_12px_35px_rgba(0,0,0,0.15)]
-        border border-[#D8CFBF]
-        text-center
-        flex flex-col items-center
+        relative grid
+        grid-cols-[65px_1fr]
+        gap-5
+        pb-12
+        last:pb-0
+        sm:grid-cols-[90px_1fr]
+        sm:gap-8
       "
     >
-      {/* ICONO */}
+      {/* COLUMNA DEL ÍCONO */}
       <div
         className="
-          w-20 h-20
-          rounded-full
-          bg-[#5E6650]/10
-          border border-[#B89B5E]/40
-          flex items-center justify-center
+          relative z-10
+          flex flex-col
+          items-center
         "
       >
-        <Icono
-          size={38}
-          strokeWidth={1.4}
-          className="text-[#B89B5E]"
-        />
+        {/* CÍRCULO */}
+        <div
+          className="
+            flex h-[62px] w-[62px]
+            items-center justify-center
+            rounded-full
+            border border-[#D7C5DE]
+            bg-[#F4EFF6]
+            sm:h-[76px] sm:w-[76px]
+          "
+        >
+          <Icono
+            size={27}
+            strokeWidth={1.3}
+            className="text-[#765587]"
+          />
+        </div>
       </div>
 
-      {/* NOMBRE DEL EVENTO */}
-      <h2 className="mt-6 text-2xl font-playfair text-black">
-        {evento.titulo}
-      </h2>
+      {/* INFORMACIÓN */}
+      <div
+        className="
+          flex flex-col
+          items-start
+          pt-1
+          text-left
+          sm:pt-2
+        "
+      >
+        {/* HORA */}
+        <p
+          className="
+            mb-2
+            text-[12px]
+            font-semibold
+            uppercase
+            tracking-[0.16em]
+            text-[#765587]
+            sm:text-[13px]
+          "
+        >
+          {evento.hora}
+        </p>
 
-      {/* HORARIO */}
-      <p className="mt-3 text-[#B89B5E] font-[DancingScript] text-xl">
-        {evento.hora}
-      </p>
+        {/* TÍTULO */}
+        <h3
+          className="
+            font-playfair
+            text-[25px]
+            font-normal
+            leading-tight
+            text-[#211A25]
+            sm:text-[31px]
+          "
+        >
+          {evento.titulo}
+        </h3>
+
+        {/* DESCRIPCIÓN */}
+        <p
+          className="
+            mt-3
+            text-[13px]
+            leading-relaxed
+            text-[#6F6573]
+            sm:text-[15px]
+          "
+        >
+          {evento.descripcion}
+        </p>
+
+        {/* LÍNEA DECORATIVA */}
+        <div
+          className="
+            mt-5
+            h-px w-16
+            bg-[#C8AA78]
+          "
+        />
+      </div>
     </motion.div>
   );
 };
@@ -143,110 +186,174 @@ const TarjetaItinerario = ({ evento, index }) => {
 // COMPONENTE PRINCIPAL
 // ==========================================
 
-const Itinerario2 = () => {
+export default function Itinerario2() {
   return (
     <section
+      id="itinerario"
       className="
-        w-full
-        bg-[#5E6650]
-        py-20
-        px-6
-        flex items-center justify-center
+        relative w-full
         overflow-hidden
+        bg-white
+        px-5 py-20
+        sm:px-8 sm:py-28
+        lg:py-32
       "
     >
-      <motion.div
-        variants={containerFade}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.2 }}
+    
+
+      <div
         className="
-          w-full max-w-6xl mx-auto
-          rounded-tl-[4rem]
-          rounded-br-[4rem]
-          rounded-tr-[1rem]
-          rounded-bl-[1rem]
-          p-6 sm:p-12
+          relative z-10
+          mx-auto w-full
+          max-w-[850px]
         "
       >
         {/* ENCABEZADO */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.8,
-            ease: [0.22, 1, 0.36, 1],
-          }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="show"
           viewport={{ once: true }}
-          className="text-center"
+          className="
+            mb-16
+            flex flex-col
+            items-center
+            text-center
+            sm:mb-20
+          "
         >
+          {/* ETIQUETA */}
           <p
             className="
-              uppercase tracking-[0.25em]
-              text-[#E7D7B1]
-              text-sm font-semibold
+              text-[11px]
+              font-semibold
+              uppercase
+              tracking-[0.3em]
+              text-[#765587]
             "
           >
-            Nuestro Día
+            NUESTRO DÍA
           </p>
 
-          <h1
+          {/* TÍTULO */}
+          <h2
             className="
-              text-4xl sm:text-5xl md:text-6xl
+              mt-5
               font-playfair
-              text-[#F7F4ED]
-              mt-4
+              text-[48px]
+              font-normal
+              text-[#211A25]
+              sm:text-[65px]
+              md:text-[75px]
             "
           >
             Itinerario
-          </h1>
+          </h2>
 
-          <div className="w-24 h-[2px] bg-[#B89B5E] mx-auto mt-6"></div>
-        </motion.div>
-
-        {/* CONTENEDOR DEL ITINERARIO */}
-        <div className="relative mt-20">
-
-          {/* LÍNEA CENTRAL */}
+          {/* DIVISOR */}
           <div
             className="
-              hidden md:block
-              absolute left-1/2 top-0
-              h-full w-[3px]
-              bg-[#E7D7B1]/40
-              -translate-x-1/2
+              mt-6
+              flex items-center
+              gap-3
             "
-          ></div>
+          >
+            <span className="h-px w-12 bg-[#C8AA78]" />
+            <span className="h-[6px] w-[6px] rotate-45 bg-[#8B709A]" />
+            <span className="h-px w-12 bg-[#C8AA78]" />
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-14">
+          {/* TEXTO */}
+          <p
+            className="
+              mt-7
+              max-w-[400px]
+              font-playfair
+              text-[20px]
+              italic
+              leading-relaxed
+              text-[#765587]
+              sm:text-[24px]
+            "
+          >
+            Cada momento de este día
+            será parte de nuestra historia.
+          </p>
+        </motion.div>
 
-            {/* COLUMNA IZQUIERDA */}
-            <div className="flex flex-col gap-14">
-              {eventosIzquierda.map((evento, index) => (
-                <TarjetaItinerario
-                  key={index}
-                  evento={evento}
-                  index={index}
-                />
-              ))}
-            </div>
+        {/* LÍNEA DE TIEMPO */}
+        <div
+          className="
+            relative
+            mx-auto
+            w-full
+            max-w-[650px]
+          "
+        >
+          {/* LÍNEA VERTICAL */}
+          <div
+            aria-hidden="true"
+            className="
+              absolute
+              left-[31px] top-8
+              bottom-8
+              w-px
+              bg-[#D7C5DE]
+              sm:left-[37px]
+            "
+          />
 
-            {/* COLUMNA DERECHA */}
-            <div className="flex flex-col gap-14 md:mt-20">
-              {eventosDerecha.map((evento, index) => (
-                <TarjetaItinerario
-                  key={index}
-                  evento={evento}
-                  index={index + eventosIzquierda.length}
-                />
-              ))}
-            </div>
-
+          {/* EVENTOS */}
+          <div className="relative z-10">
+            {eventos.map((evento, index) => (
+              <EventoItinerario
+                key={evento.titulo}
+                evento={evento}
+                index={index}
+              />
+            ))}
           </div>
         </div>
-      </motion.div>
+
+        {/* MENSAJE FINAL */}
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="
+            mt-16
+            flex flex-col
+            items-center
+            text-center
+          "
+        >
+          <div className="flex items-center gap-4">
+            <span className="h-px w-12 bg-[#C8AA78]" />
+
+            <Heart
+              size={18}
+              strokeWidth={1.2}
+              className="text-[#8B709A]"
+            />
+
+            <span className="h-px w-12 bg-[#C8AA78]" />
+          </div>
+
+          <p
+            className="
+              mt-6
+              font-playfair
+              text-[20px]
+              italic
+              text-[#765587]
+              sm:text-[23px]
+            "
+          >
+            Gracias por ser parte de nuestro día.
+          </p>
+        </motion.div>
+      </div>
     </section>
   );
-};
-
-export default Itinerario2;
+}

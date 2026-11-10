@@ -5,6 +5,7 @@ import Intinerario2 from "./componentes-encabezado/itinerario2";
 import Novios from "./componentes-encabezado/novios";
 import ConfirmacionAsistencia from "./componentes-encabezado/confirmacion";
 import Musica from "./componentes-encabezado/Musica";
+import CuentaRegresiva from "./componentes-encabezado/CuentaRegresiva";
 
 export default function PaginaPrincipal() {
 
@@ -12,6 +13,8 @@ export default function PaginaPrincipal() {
     <div>
 
       <Musica/>
+
+      <CuentaRegresiva/>
 
       <Novios />
 

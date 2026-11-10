@@ -1,218 +1,354 @@
+
 import React from "react";
 import { motion } from "framer-motion";
+import { Heart } from "lucide-react";
 
-const Novios = () => {
+// ==========================================
+// CONFIGURACIÓN EDITABLE - WEDLY
+// ==========================================
 
+const CONFIG = {
+  novio: "Antonio",
+  novia: "Cristel",
+
+  padresNovio: [
+    "Guadalupe Hernández Manzur",
+    "Horacio Plancarte Cortez",
+  ],
+
+  padresNovia: [
+    "Isabel Guerra náhuatt",
+    "Abraham Montejo de la cruz",
+  ],
+
+  mensaje: "Con la bendición de nuestros padres",
+};
+
+// ==========================================
+// ANIMACIONES
+// ==========================================
+
+const aparecer = {
+  oculto: {
+    opacity: 0,
+    y: 30,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+  },
+};
+
+// ==========================================
+// BLOQUE DE PADRES
+// ==========================================
+
+const BloquePadres = ({ titulo, nombres, delay = 0 }) => {
   return (
-    <div className="w-full bg-[#F7F4ED] py-20 px-6 flex items-center justify-center overflow-hidden">
+    <motion.div
+      variants={aparecer}
+      initial="oculto"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{
+        duration: 0.8,
+        delay,
+        ease: "easeOut",
+      }}
+      className="
+        flex w-full flex-col
+        items-center
+        px-3 py-9
+        text-center
+        sm:px-7
+      "
+    >
+      {/* ORNAMENTO SUPERIOR */}
+      <div className="mb-7 flex items-center gap-3">
+        <span className="h-px w-9 bg-[#C8AA78]" />
+        <span className="h-[5px] w-[5px] rotate-45 bg-[#8B709A]" />
+        <span className="h-px w-9 bg-[#C8AA78]" />
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 60 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.2 }}
-        viewport={{ once: true }}
+      {/* TÍTULO */}
+      <h3
         className="
-          max-w-4xl w-full
-          bg-white
-          rounded-tl-[4rem]
-          rounded-br-[4rem]
-          rounded-tr-[1rem]
-          rounded-bl-[1rem]
-          shadow-[0_15px_50px_rgba(0,0,0,0.12)]
-          px-8 py-16 sm:px-16
-          text-center
-          relative
-          overflow-hidden
+          mb-8
+          text-[11px]
+          font-semibold
+          uppercase
+          tracking-[0.22em]
+          text-[#765587]
+          sm:text-[13px]
         "
       >
+        {titulo}
+      </h3>
 
-        {/* Glow elegante */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#E7D7B1]/20 via-transparent to-[#B89B5E]/10 pointer-events-none"></div>
-
-        {/* Texto superior */}
-        <motion.p
-          initial={{ opacity: 0, letterSpacing: "0.4em" }}
-          whileInView={{ opacity: 1, letterSpacing: "0.2em" }}
-          transition={{ duration: 1 }}
-          viewport={{ once: true }}
-          className="
-            uppercase
-            text-[#B89B5E]
-            tracking-[0.2em]
-            text-xs sm:text-sm
-            font-semibold
-          "
-        >
-          Nuestra Boda
-        </motion.p>
-
-        {/* Nombres */}
-        <motion.h1
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="
-            mt-10
-            text-4xl sm:text-5xl md:text-6xl
-            font-playfair
-            text-black
-            leading-tight
-          "
-        >
-          Karla Martinez Sanchez
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          viewport={{ once: true }}
-          className="
-            my-6
-            text-4xl sm:text-5xl
-            text-[#B89B5E]
-            font-[DancingScript]
-          "
-        >
-          &
-        </motion.p>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="
-            text-4xl sm:text-5xl md:text-6xl
-            font-playfair
-            text-black
-            leading-tight
-          "
-        >
-          Mark Hernandez Salazar
-        </motion.h1>
-
-        {/* Línea */}
-        <motion.div
-          initial={{ width: 0 }}
-          whileInView={{ width: "7rem" }}
-          transition={{ duration: 1, delay: 0.6 }}
-          viewport={{ once: true }}
-          className="h-[2px] bg-[#B89B5E] mx-auto mt-10"
-        />
-
-        {/* Texto bendición */}
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.8 }}
-          viewport={{ once: true }}
-          className="
-            mt-10
-            text-xl sm:text-2xl
-            text-black/70
-            font-[DancingScript]
-            leading-relaxed
-          "
-        >
-          Con la bendición de nuestros padres
-        </motion.p>
-
-        {/* Padres */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-14">
-
-          {/* Padres novio */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 1 }}
-            viewport={{ once: true }}
-            className="
-              bg-[#F7F4ED]
-              rounded-3xl
-              p-8
-              shadow-md
-            "
-          >
-
-            <h2 className="
-              text-[#B89B5E]
-              uppercase
-              tracking-[0.2em]
-              text-sm
-              mb-6
-            ">
-              Padres del Novio
-            </h2>
-
-            <p className="
-              text-2xl
-              font-playfair
-              text-black
-            ">
-              Gael Hernandez
+      {/* NOMBRES */}
+      <div className="flex flex-col items-center gap-5">
+        {nombres.map((nombre, index) => (
+          <React.Fragment key={index}>
+            <p
+              className="
+                max-w-[320px]
+                font-playfair
+                text-[24px]
+                font-normal
+                leading-[1.4]
+                text-[#211A25]
+                sm:text-[28px]
+                md:text-[30px]
+              "
+            >
+              {nombre}
             </p>
 
-            <p className="
-              mt-3
-              text-2xl
-              font-playfair
-              text-black
-            ">
-              Marta Salazar
-            </p>
-
-          </motion.div>
-
-          {/* Padres novia */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 1.2 }}
-            viewport={{ once: true }}
-            className="
-              bg-[#F7F4ED]
-              rounded-3xl
-              p-8
-              shadow-md
-            "
-          >
-
-            <h2 className="
-              text-[#B89B5E]
-              uppercase
-              tracking-[0.2em]
-              text-sm
-              mb-6
-            ">
-              Padres de la Novia
-            </h2>
-
-            <p className="
-              text-2xl
-              font-playfair
-              text-black
-            ">
-              Jose Martinez
-            </p>
-
-            <p className="
-              mt-3
-              text-2xl
-              font-playfair
-              text-black
-            ">
-              Karla Sanchez
-            </p>
-
-          </motion.div>
-
-        </div>
-
-      </motion.div>
-    </div>
+            {index < nombres.length - 1 && (
+              <span
+                className="
+                  font-playfair
+                  text-[26px]
+                  italic
+                  text-[#8B709A]
+                "
+              >
+                &
+              </span>
+            )}
+          </React.Fragment>
+        ))}
+      </div>
+    </motion.div>
   );
 };
 
-export default Novios;
+// ==========================================
+// COMPONENTE PRINCIPAL
+// ==========================================
+
+export default function Novios() {
+  return (
+    <section
+      id="padres"
+      className="
+        relative w-full
+        overflow-hidden
+        bg-white
+        px-5 py-20
+        sm:px-8 sm:py-28
+        md:py-32
+      "
+    >
+      {/* LÍNEAS DECORATIVAS SUPERIORES */}
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute left-1/2 top-0
+          h-16 w-px
+          -translate-x-1/2
+          bg-[#C8AA78]
+        "
+      />
+
+      {/* CONTENIDO */}
+      <div
+        className="
+          relative z-10
+          mx-auto flex
+          w-full max-w-5xl
+          flex-col items-center
+          text-center
+        "
+      >
+        {/* ETIQUETA SUPERIOR */}
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="
+            mb-6
+            text-[11px]
+            font-medium
+            uppercase
+            tracking-[0.3em]
+            text-[#765587]
+          "
+        >
+          NUESTRA BODA
+        </motion.p>
+
+        {/* NOMBRES DE LOS NOVIOS */}
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{
+            duration: 0.9,
+            delay: 0.1,
+          }}
+          className="
+            font-playfair
+            text-[43px]
+            font-normal
+            leading-tight
+            text-[#211A25]
+            sm:text-[62px]
+            md:text-[80px]
+          "
+        >
+          {CONFIG.novio}
+
+          <span
+            className="
+              mx-3
+              font-playfair
+              italic
+              text-[#8B709A]
+              sm:mx-5
+            "
+          >
+            &
+          </span>
+
+          {CONFIG.novia}
+        </motion.h2>
+
+        {/* DIVISOR */}
+        <motion.div
+          initial={{ width: 0 }}
+          whileInView={{ width: 100 }}
+          viewport={{ once: true }}
+          transition={{
+            duration: 1,
+            delay: 0.3,
+          }}
+          className="
+            mt-9
+            h-px
+            bg-[#C8AA78]
+          "
+        />
+
+        {/* MENSAJE DE BENDICIÓN */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{
+            duration: 0.8,
+            delay: 0.3,
+          }}
+          className="
+            mt-10
+            flex flex-col
+            items-center
+            gap-5
+          "
+        >
+          <Heart
+            size={24}
+            strokeWidth={1.2}
+            className="text-[#8B709A]"
+          />
+
+          <p
+            className="
+              max-w-[460px]
+              font-playfair
+              text-[25px]
+              italic
+              leading-relaxed
+              text-[#211A25]
+              sm:text-[31px]
+            "
+          >
+            {CONFIG.mensaje}
+          </p>
+        </motion.div>
+
+        {/* SEPARADOR PRINCIPAL */}
+        <div
+          className="
+            mt-12
+            h-px w-full
+            max-w-[760px]
+            bg-[#E5D8EA]
+            sm:mt-16
+          "
+        />
+
+        {/* PADRES */}
+        <div
+          className="
+            mt-5
+            grid w-full
+            max-w-[900px]
+            grid-cols-1
+            items-start
+            gap-2
+            md:grid-cols-2
+            md:gap-0
+          "
+        >
+          {/* PADRES DEL NOVIO */}
+          <BloquePadres
+            titulo="Padres del Novio"
+            nombres={CONFIG.padresNovio}
+            delay={0.2}
+          />
+
+          {/* PADRES DE LA NOVIA */}
+          <div className="relative">
+            {/* SEPARADOR VERTICAL */}
+            <div
+              aria-hidden="true"
+              className="
+                pointer-events-none
+                absolute left-0 top-9
+                hidden h-[75%] w-px
+                bg-[#E5D8EA]
+                md:block
+              "
+            />
+
+            <BloquePadres
+              titulo="Padres de la Novia"
+              nombres={CONFIG.padresNovia}
+              delay={0.35}
+            />
+          </div>
+        </div>
+
+        {/* ORNAMENTO FINAL */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{
+            duration: 1,
+            delay: 0.5,
+          }}
+          className="
+            mt-10
+            flex items-center
+            gap-4
+            sm:mt-14
+          "
+        >
+          <span className="h-px w-12 bg-[#C8AA78]" />
+
+          <Heart
+            size={17}
+            strokeWidth={1.2}
+            className="text-[#8B709A]"
+          />
+
+          <span className="h-px w-12 bg-[#C8AA78]" />
+        </motion.div>
+      </div>
+    </section>
+  );
+}

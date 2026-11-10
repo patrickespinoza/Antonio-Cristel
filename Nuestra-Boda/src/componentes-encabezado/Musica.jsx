@@ -1,7 +1,15 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Music2, Volume2, VolumeX, Sparkles } from "lucide-react";
+import {
+  Music2,
+  Volume2,
+  VolumeX,
+  Play,
+  Pause,
+  Disc3,
+  Heart,
+} from "lucide-react";
 
 // ==========================================
 // CONFIGURACIÓN EDITABLE - WEDLY
@@ -13,6 +21,16 @@ const CONFIG = {
   titulo: "Una melodía para nuestro amor",
   descripcion:
     "Hemos elegido una canción especial para acompañarte durante esta invitación.",
+  etiqueta: "NUESTRA BODA",
+};
+
+const COLORES = {
+  lila: "#8B709A",
+  lilaOscuro: "#634B73",
+  lilaClaro: "#E9DDF0",
+  blanco: "#FFFFFF",
+  dorado: "#C8AA78",
+  negro: "#211A25",
 };
 
 // ==========================================
@@ -25,29 +43,20 @@ const Musica = () => {
   const [mostrarVentana, setMostrarVentana] = useState(true);
   const [reproduciendo, setReproduciendo] = useState(false);
 
-  // ==========================================
-  // CONFIGURAR AUDIO
-  // ==========================================
-
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = CONFIG.volumen;
+    const audio = audioRef.current;
+
+    if (audio) {
+      audio.volume = CONFIG.volumen;
     }
 
     return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
+      if (audio) audio.pause();
     };
   }, []);
 
-  // ==========================================
-  // INICIAR MÚSICA
-  // ==========================================
-
   const iniciarMusica = async () => {
     const audio = audioRef.current;
-
     if (!audio) return;
 
     try {
@@ -61,25 +70,17 @@ const Musica = () => {
     }
   };
 
-  // ==========================================
-  // CONTINUAR SIN MÚSICA
-  // ==========================================
-
   const continuarSinMusica = () => {
+    audioRef.current?.pause();
     setReproduciendo(false);
     setMostrarVentana(false);
   };
 
-  // ==========================================
-  // ACTIVAR / DESACTIVAR MÚSICA
-  // ==========================================
-
   const alternarMusica = async () => {
     const audio = audioRef.current;
-
     if (!audio) return;
 
-    if (reproduciendo) {
+    if (!audio.paused) {
       audio.pause();
       setReproduciendo(false);
     } else {
@@ -88,24 +89,25 @@ const Musica = () => {
         setReproduciendo(true);
       } catch (error) {
         console.warn("No se pudo reproducir la música:", error);
+        setReproduciendo(false);
       }
     }
   };
 
   return (
     <>
-      {/* ======================================
-          AUDIO
-      ====================================== */}
-
-      <audio ref={audioRef} loop preload="none">
+      {/* AUDIO */}
+      <audio
+        ref={audioRef}
+        loop
+        preload="none"
+        onPlay={() => setReproduciendo(true)}
+        onPause={() => setReproduciendo(false)}
+      >
         <source src={CONFIG.cancion} type="audio/mpeg" />
       </audio>
 
-      {/* ======================================
-          VENTANA EMERGENTE
-      ====================================== */}
-
+      {/* VENTANA INICIAL */}
       <AnimatePresence>
         {mostrarVentana && (
           <motion.div
@@ -113,30 +115,23 @@ const Musica = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.35 }}
             className="
-              fixed
-              inset-0
-              z-[9999]
-              flex
-              items-center
-              justify-center
+              fixed inset-0 z-[9999]
+              flex items-center justify-center
               overflow-y-auto
-              bg-black/65
-              px-5
-              py-8
+              bg-black/75
+              px-4 py-5
             "
           >
-            {/* TARJETA */}
-
             <motion.div
               role="dialog"
               aria-modal="true"
               aria-labelledby="titulo-musica"
               initial={{
                 opacity: 0,
-                y: 45,
-                scale: 0.94,
+                y: 35,
+                scale: 0.96,
               }}
               animate={{
                 opacity: 1,
@@ -145,217 +140,225 @@ const Musica = () => {
               }}
               exit={{
                 opacity: 0,
-                y: 25,
-                scale: 0.96,
+                y: 20,
+                scale: 0.97,
               }}
               transition={{
-                duration: 0.7,
+                duration: 0.6,
                 ease: [0.22, 1, 0.36, 1],
               }}
               className="
-                relative
-                my-auto
-                w-full
-                max-w-md
+                relative my-auto
+                w-full max-w-[430px]
                 overflow-hidden
-                rounded-tl-[4rem]
-                rounded-br-[4rem]
-                rounded-tr-[1rem]
-                rounded-bl-[1rem]
-                border
-                border-[#E7D7B1]
-                bg-[#F7F4ED]
-                px-7
-                py-12
+                rounded-[22px]
+                border border-[#BFA6C9]
+                bg-[#8B709A]
                 text-center
-                shadow-[0_20px_60px_rgba(0,0,0,0.22)]
-                sm:px-10
-                sm:py-14
+                shadow-2xl
               "
             >
-              {/* MARCO DECORATIVO */}
-
+              {/* LÍNEAS DORADAS DECORATIVAS */}
               <div
                 className="
                   pointer-events-none
-                  absolute
-                  inset-3
-                  rounded-tl-[3.4rem]
-                  rounded-br-[3.4rem]
-                  rounded-tr-[0.7rem]
-                  rounded-bl-[0.7rem]
-                  border
-                  border-[#B89B5E]/40
+                  absolute inset-[9px]
+                  rounded-[16px]
+                  border border-[#C8AA78]/65
                 "
               />
 
-              <div className="relative z-10">
-
-                {/* ORNAMENTO SUPERIOR */}
-
-                <div
-                  className="
-                    mb-8
-                    flex
-                    items-center
-                    justify-center
-                    gap-4
-                  "
-                >
-                  <span className="h-px w-10 bg-[#B89B5E]" />
-
-                  <Sparkles
-                    size={19}
-                    strokeWidth={1.2}
-                    className="text-[#B89B5E]"
-                  />
-
-                  <span className="h-px w-10 bg-[#B89B5E]" />
-                </div>
-
-                {/* ÍCONO MUSICAL */}
-
+              {/* VINILO DECORATIVO */}
+              <div
+                aria-hidden="true"
+                className="
+                  pointer-events-none
+                  absolute -right-16 -top-20
+                  h-48 w-48
+                  sm:h-56 sm:w-56
+                "
+              >
                 <motion.div
-                  animate={{
-                    y: [0, -5, 0],
-                  }}
+                  animate={{ rotate: 360 }}
                   transition={{
-                    duration: 3.5,
+                    duration: 18,
                     repeat: Infinity,
-                    ease: "easeInOut",
+                    ease: "linear",
                   }}
                   className="
-                    mx-auto
-                    mb-7
-                    flex
-                    h-20
-                    w-20
-                    items-center
-                    justify-center
+                    relative h-full w-full
                     rounded-full
-                    border
-                    border-[#B89B5E]
-                    bg-white
-                    text-[#B89B5E]
+                    border-[5px] border-[#252027]
+                    bg-[#171419]
+                    shadow-xl
                   "
+                  style={{
+                    background:
+                      "repeating-radial-gradient(circle, #171419 0px, #171419 5px, #343039 6px, #171419 8px)",
+                  }}
                 >
-                  <Music2
-                    size={36}
-                    strokeWidth={1.2}
-                  />
+                  <div
+                    className="
+                      absolute left-1/2 top-1/2
+                      flex h-16 w-16
+                      -translate-x-1/2 -translate-y-1/2
+                      items-center justify-center
+                      rounded-full
+                      border-2 border-[#C8AA78]
+                      bg-[#A98AB8]
+                    "
+                  >
+                    <Heart
+                      size={17}
+                      strokeWidth={1.5}
+                      className="text-white"
+                    />
+                  </div>
                 </motion.div>
+              </div>
+
+              {/* CONTENIDO */}
+              <div className="relative z-10 px-6 pb-9 pt-20 sm:px-10 sm:pb-11 sm:pt-24">
 
                 {/* ETIQUETA */}
+                <div className="mb-5 flex items-center justify-center gap-3">
+                  <span className="h-px w-7 bg-[#C8AA78]" />
 
-                <p
-                  className="
-                    mb-4
-                    text-[10px]
-                    font-semibold
-                    uppercase
-                    tracking-[0.3em]
-                    text-[#B89B5E]
-                    sm:text-xs
-                  "
-                >
-                  Nuestra Boda
-                </p>
+                  <p className="text-[10px] font-medium tracking-[0.32em] text-white">
+                    {CONFIG.etiqueta}
+                  </p>
+
+                  <span className="h-px w-7 bg-[#C8AA78]" />
+                </div>
 
                 {/* TÍTULO */}
-
                 <h2
                   id="titulo-musica"
                   className="
                     font-playfair
-                    text-3xl
+                    text-[43px]
                     font-normal
-                    leading-tight
-                    text-[#29241E]
-                    sm:text-4xl
+                    leading-none
+                    text-white
+                    sm:text-[52px]
                   "
                 >
-                  {CONFIG.titulo}
+                  Música
                 </h2>
 
-                {/* DIVISOR */}
-
-                <div
-                  className="
-                    mx-auto
-                    my-7
-                    h-px
-                    w-20
-                    bg-[#B89B5E]
-                  "
-                />
+                <div className="mx-auto my-6 h-px w-16 bg-[#C8AA78]" />
 
                 {/* DESCRIPCIÓN */}
-
                 <p
                   className="
-                    mx-auto
-                    max-w-xs
-                    font-playfair
-                    text-sm
-                    leading-[1.9]
-                    text-[#5B544A]
-                    sm:text-base
+                    mx-auto max-w-[280px]
+                    text-[11px]
+                    font-medium
+                    uppercase
+                    leading-[2]
+                    tracking-[0.16em]
+                    text-white
                   "
                 >
                   {CONFIG.descripcion}
                 </p>
 
-                <p
-                  className="
-                    mt-5
-                    text-sm
-                    italic
-                    text-[#8A754C]
-                  "
-                >
-                  ¿Deseas escucharla?
-                </p>
-
-                {/* BOTONES */}
-
+                {/* TARJETA DE REPRODUCTOR */}
                 <div
                   className="
-                    mt-9
-                    flex
-                    flex-col
-                    gap-3
+                    relative mt-9
+                    rounded-[24px]
+                    border border-[#E8DDEC]
+                    bg-[#FFFFFF]
+                    p-5
+                    text-left
+                    shadow-[0_12px_28px_rgba(40,22,50,0.16)]
                   "
                 >
-                  {/* SÍ, ESCUCHAR */}
+                  <div className="flex items-center gap-4">
+
+                    {/* PORTADA MUSICAL */}
+                    <div
+                      className="
+                        flex h-[68px] w-[68px]
+                        shrink-0 items-center justify-center
+                        rounded-[12px]
+                        bg-[#E9DDF0]
+                      "
+                    >
+                      <Disc3
+                        size={35}
+                        strokeWidth={1.1}
+                        className="text-[#765587]"
+                      />
+                    </div>
+
+                    {/* INFORMACIÓN */}
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[9px] uppercase tracking-[0.2em] text-[#8B709A]">
+                        CANCIÓN ESPECIAL
+                      </p>
+
+                      <p className="mt-1 font-playfair text-[18px] leading-snug text-[#211A25]">
+                        Nuestra canción
+                      </p>
+
+                      <p className="mt-1 text-[11px] text-[#796B80]">
+                        Un momento para recordar
+                      </p>
+                    </div>
+
+                    <Heart
+                      size={20}
+                      strokeWidth={1.4}
+                      className="shrink-0 text-[#765587]"
+                    />
+                  </div>
+
+                  {/* BARRA DECORATIVA */}
+                  <div className="mt-6 flex items-center gap-3">
+                    <span className="h-[3px] w-2/5 rounded-full bg-[#8B709A]" />
+                    <span className="h-[3px] flex-1 rounded-full bg-[#E9DDF0]" />
+                  </div>
+
+                  {/* INDICACIÓN */}
+                  <div className="mt-5 flex items-center justify-center gap-2">
+                    <Music2
+                      size={15}
+                      className="text-[#8B709A]"
+                    />
+
+                    <span className="text-[11px] tracking-wide text-[#765587]">
+                      ¿Deseas escuchar nuestra canción?
+                    </span>
+                  </div>
+                </div>
+
+                {/* BOTONES DE ACCIÓN */}
+                <div className="mt-7 flex flex-col gap-3">
 
                   <motion.button
                     type="button"
                     onClick={iniciarMusica}
-                    whileHover={{ scale: 1.03 }}
+                    whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.97 }}
                     className="
-                      flex
-                      w-full
-                      items-center
-                      justify-center
-                      gap-3
+                      flex min-h-[55px] w-full
+                      items-center justify-center gap-3
                       rounded-full
-                      bg-[#B89B5E]
-                      px-6
-                      py-4
-                      text-sm
-                      font-medium
-                      tracking-wide
-                      text-white
+                      bg-white px-5 py-4
+                      text-[13px] font-semibold
+                      text-[#634B73]
                       transition-colors
-                      hover:bg-[#A58A50]
+                      hover:bg-[#F2EAF5]
                     "
                   >
-                    <Volume2 size={19} />
+                    <Play
+                      size={17}
+                      fill="currentColor"
+                    />
                     Sí, escuchar música
                   </motion.button>
-
-                  {/* NO, CONTINUAR */}
 
                   <motion.button
                     type="button"
@@ -363,48 +366,31 @@ const Musica = () => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className="
-                      flex
-                      w-full
-                      items-center
-                      justify-center
-                      gap-3
+                      flex min-h-[53px] w-full
+                      items-center justify-center gap-3
                       rounded-full
-                      border
-                      border-[#B89B5E]/60
-                      bg-white
-                      px-6
-                      py-4
-                      text-sm
-                      font-medium
-                      tracking-wide
-                      text-[#7B6744]
+                      border border-white/70
+                      bg-transparent px-5 py-4
+                      text-[13px] font-medium
+                      text-white
                       transition-colors
-                      hover:bg-[#F0E8D9]
+                      hover:bg-white/10
                     "
                   >
-                    <VolumeX size={19} />
+                    <VolumeX size={17} />
                     Continuar sin música
                   </motion.button>
                 </div>
 
-                {/* ORNAMENTO FINAL */}
-
-                <div
-                  className="
-                    mt-9
-                    flex
-                    items-center
-                    justify-center
-                    gap-4
-                  "
-                >
-                  <span className="h-px w-10 bg-[#B89B5E]/60" />
-
-                  <span className="text-[#B89B5E]">
-                    ✦
-                  </span>
-
-                  <span className="h-px w-10 bg-[#B89B5E]/60" />
+                {/* PIE DECORATIVO */}
+                <div className="mt-8 flex items-center justify-center gap-3">
+                  <span className="h-px w-9 bg-[#C8AA78]" />
+                  <Heart
+                    size={13}
+                    strokeWidth={1.4}
+                    className="text-[#E8D5B5]"
+                  />
+                  <span className="h-px w-9 bg-[#C8AA78]" />
                 </div>
               </div>
             </motion.div>
@@ -412,17 +398,15 @@ const Musica = () => {
         )}
       </AnimatePresence>
 
-      {/* ======================================
-          BOTÓN FLOTANTE DE MÚSICA
-      ====================================== */}
-
+      {/* BOTÓN FLOTANTE */}
       {!mostrarVentana && (
         <motion.button
           type="button"
           onClick={alternarMusica}
           initial={{ opacity: 0, scale: 0.7 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.45 }}
+          whileTap={{ scale: 0.9 }}
           aria-label={
             reproduciendo
               ? "Pausar música"
@@ -434,31 +418,23 @@ const Musica = () => {
               : "Reproducir música"
           }
           className="
-            fixed
-            bottom-6
-            right-5
-            z-[9998]
-            flex
-            h-14
-            w-14
-            items-center
-            justify-center
+            fixed bottom-6 right-5 z-[9998]
+            flex h-14 w-14
+            items-center justify-center
             rounded-full
-            border-2
-            border-[#E7D7B1]
-            bg-[#B89B5E]
+            border-2 border-[#C8AA78]
+            bg-[#765587]
             text-white
-            shadow-[0_8px_25px_rgba(0,0,0,0.18)]
+            shadow-[0_8px_24px_rgba(42,23,52,0.3)]
             transition-colors
-            hover:bg-[#A58A50]
-            sm:bottom-8
-            sm:right-8
+            hover:bg-[#634B73]
+            sm:bottom-8 sm:right-8
           "
         >
           {reproduciendo ? (
-            <Volume2 size={24} strokeWidth={1.7} />
+            <Volume2 size={24} strokeWidth={1.6} />
           ) : (
-            <VolumeX size={24} strokeWidth={1.7} />
+            <VolumeX size={24} strokeWidth={1.6} />
           )}
         </motion.button>
       )}

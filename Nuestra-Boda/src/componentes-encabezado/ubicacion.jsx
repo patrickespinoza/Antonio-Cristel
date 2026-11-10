@@ -8,37 +8,40 @@ import {
   Wine,
   ArrowUpRight,
   CalendarDays,
+  Navigation,
 } from "lucide-react";
 
 // ==========================================
-// INFORMACIÓN EDITABLE - WEDLY
+// CONFIGURACIÓN EDITABLE - WEDLY
 // ==========================================
 
-// FECHA DE LA CELEBRACIÓN
-const fechaCelebracion = {
-  dia: "Jueves",
-  fecha: "11",
-  mesAnio: "Junio 2026",
-};
+const CONFIG = {
+  fecha: {
+    dia: "SÁBADO",
+    numero: "26",
+    mes: "DICIEMBRE",
+    anio: "2026",
+  },
 
-// CEREMONIA
-const ceremonia = {
-  titulo: "Ceremonia",
-  hora: "4:30 PM",
-  lugar: "Salón Event Center",
-  direccion: "Puebla, Puebla",
-  ubicacion: "https://maps.app.goo.gl/TsSDUBKAractwi8F8",
-  icono: Church,
-};
+  ceremonia: {
+    tipo: "01 / CEREMONIA RELIGIOSA",
+    titulo: "Ceremonia Religiosa",
+    hora: "6:00 PM",
+    lugar: "Iglesia Lucero de la Mañana",
+    ubicacion:
+      "https://maps.app.goo.gl/WKyEbutUBPXYm1HT8",
+    icono: Church,
+  },
 
-// RECEPCIÓN
-const recepcion = {
-  titulo: "Recepción",
-  hora: "8:00 PM",
-  lugar: "Jardín Magnolia",
-  direccion: "Atlixco, Puebla",
-  ubicacion: "https://maps.app.goo.gl/TsSDUBKAractwi8F8",
-  icono: Wine,
+  recepcion: {
+    tipo: "02 / CELEBRACIÓN",
+    titulo: "Recepción",
+    hora: "7:00 PM",
+    lugar: "Palapa Los Laureles",
+    ubicacion:
+      "https://maps.app.goo.gl/4VFTiSo9HVRfpXgq6",
+    icono: Wine,
+  },
 };
 
 // ==========================================
@@ -61,146 +64,184 @@ const fadeUp = {
 };
 
 // ==========================================
-// TARJETA REUTILIZABLE
+// TARJETA DE EVENTO
 // ==========================================
 
 const TarjetaEvento = ({
+  tipo,
   titulo,
   hora,
   lugar,
-  direccion,
   ubicacion,
   icono: Icono,
+  destacada = false,
 }) => {
   return (
     <motion.article
       variants={fadeUp}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-      whileHover={{ y: -5 }}
+      viewport={{ once: true, amount: 0.15 }}
+      whileHover={{ y: -4 }}
       className="
-        relative
-        w-full max-w-xl
-        bg-[#F7F4ED]
-        border border-[#D8CFBF]
-        rounded-tl-[4rem]
-        rounded-br-[4rem]
-        rounded-tr-[1rem]
-        rounded-bl-[1rem]
-        shadow-[0_20px_60px_rgba(0,0,0,0.18)]
-        px-7 py-12
-        sm:px-12 sm:py-14
+        relative flex h-full
+        w-full flex-col
         overflow-hidden
+        rounded-[20px]
+        border border-[#E6DCE9]
+        bg-white
+        shadow-[0_12px_35px_rgba(45,25,55,0.12)]
       "
     >
-      {/* DETALLE DECORATIVO SUPERIOR */}
+      {/* FRANJA SUPERIOR */}
       <div
-        className="
-          absolute top-0 left-1/2
-          -translate-x-1/2
-          w-32 h-[3px]
-          bg-[#B89B5E]
-        "
-      />
-
-      {/* DECORACIÓN DE FONDO */}
-      <div
-        className="
-          absolute -top-16 -right-16
-          w-48 h-48
-          rounded-full
-          border border-[#B89B5E]/15
-          pointer-events-none
-        "
-      />
-
-      <div
-        className="
-          absolute -top-9 -right-9
-          w-32 h-32
-          rounded-full
-          border border-[#B89B5E]/15
-          pointer-events-none
-        "
-      />
-
-      <div className="relative z-10 flex flex-col items-center text-center">
-
-        {/* ICONO PRINCIPAL */}
+        className={`
+          flex min-h-[160px]
+          flex-col items-center
+          justify-center
+          px-6 py-8
+          ${
+            destacada
+              ? "bg-[#E9DDF0]"
+              : "bg-[#F5F0F7]"
+          }
+        `}
+      >
+        {/* ÍCONO */}
         <div
           className="
-            w-20 h-20
+            mb-4 flex
+            h-[65px] w-[65px]
+            items-center justify-center
             rounded-full
-            border border-[#B89B5E]/40
-            bg-[#5E6650]/5
-            flex items-center justify-center
-            mb-6
+            border border-[#BDA5C7]
+            bg-white
           "
         >
           <Icono
-            size={36}
-            strokeWidth={1.3}
-            className="text-[#B89B5E]"
+            size={32}
+            strokeWidth={1.2}
+            className="text-[#765587]"
           />
         </div>
 
-        {/* TÍTULO */}
-        <h2
+        {/* ETIQUETA */}
+        <p
           className="
-            text-3xl sm:text-4xl
+            text-center text-[10px]
+            font-semibold
+            uppercase
+            tracking-[0.2em]
+            text-[#765587]
+          "
+        >
+          {tipo}
+        </p>
+      </div>
+
+      {/* CONTENIDO */}
+      <div
+        className="
+          flex flex-1
+          flex-col items-center
+          px-6 pb-9 pt-8
+          text-center
+          sm:px-9
+        "
+      >
+        {/* TÍTULO */}
+        <h3
+          className="
             font-playfair
-            text-[#343A2D]
-            tracking-wide
+            text-[29px]
+            font-normal
+            leading-tight
+            text-[#211A25]
+            sm:text-[34px]
           "
         >
           {titulo}
-        </h2>
+        </h3>
 
-        <div className="flex items-center gap-3 mt-6 mb-9">
-          <div className="w-12 h-[1px] bg-[#B89B5E]/70" />
-          <div className="w-2 h-2 rotate-45 border border-[#B89B5E]" />
-          <div className="w-12 h-[1px] bg-[#B89B5E]/70" />
+        {/* DIVISOR */}
+        <div className="my-7 flex items-center gap-3">
+          <span className="h-px w-10 bg-[#C8AA78]" />
+          <span className="h-[5px] w-[5px] rotate-45 bg-[#C8AA78]" />
+          <span className="h-px w-10 bg-[#C8AA78]" />
         </div>
 
         {/* HORA */}
         <div className="flex flex-col items-center">
-          <Clock3
-            size={21}
-            strokeWidth={1.5}
-            className="text-[#B89B5E] mb-3"
-          />
+          <div className="mb-3 flex items-center gap-2">
+            <Clock3
+              size={17}
+              strokeWidth={1.4}
+              className="text-[#765587]"
+            />
 
-          <p className="uppercase tracking-[0.3em] text-xs font-semibold text-[#8C774D]">
-            Hora del evento
-          </p>
+            <span
+              className="
+                text-[10px]
+                font-medium
+                uppercase
+                tracking-[0.2em]
+                text-[#765587]
+              "
+            >
+              HORA DEL EVENTO
+            </span>
+          </div>
 
-          <p className="text-2xl sm:text-3xl font-playfair text-[#343A2D] mt-3">
+          <p
+            className="
+              font-playfair
+              text-[33px]
+              font-normal
+              text-[#211A25]
+            "
+          >
             {hora}
           </p>
         </div>
 
-        {/* SEPARADOR */}
-        <div className="w-16 h-[1px] bg-[#D8CFBF] my-9" />
-
         {/* LUGAR */}
-        <div className="flex flex-col items-center">
+        <div
+          className="
+            mt-8 flex
+            w-full flex-col
+            items-center
+          "
+        >
           <MapPin
-            size={22}
-            strokeWidth={1.5}
-            className="text-[#B89B5E] mb-3"
+            size={21}
+            strokeWidth={1.4}
+            className="mb-3 text-[#765587]"
           />
 
-          <p className="uppercase tracking-[0.3em] text-xs font-semibold text-[#8C774D]">
-            Lugar
-          </p>
+          <span
+            className="
+              mb-3
+              text-[10px]
+              font-medium
+              uppercase
+              tracking-[0.2em]
+              text-[#765587]
+            "
+          >
+            LUGAR
+          </span>
 
-          <h3 className="text-2xl sm:text-3xl font-playfair text-[#343A2D] mt-3">
+          <p
+            className="
+              max-w-[280px]
+              font-playfair
+              text-[23px]
+              leading-snug
+              text-[#211A25]
+              sm:text-[26px]
+            "
+          >
             {lugar}
-          </h3>
-
-          <p className="text-[#5E6650]/80 mt-4 leading-relaxed text-sm sm:text-base max-w-sm">
-            {direccion}
           </p>
         </div>
 
@@ -209,42 +250,34 @@ const TarjetaEvento = ({
           href={ubicacion}
           target="_blank"
           rel="noopener noreferrer"
-          whileHover={{ scale: 1.04 }}
+          whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
           className="
-            group
-            mt-10
-            inline-flex items-center justify-center gap-3
-            bg-[#5E6650]
-            hover:bg-[#4B5340]
-            text-white
-            px-8 py-4
+            group mt-auto
+            flex min-h-[54px]
+            w-full items-center
+            justify-center gap-3
             rounded-full
-            shadow-[0_8px_25px_rgba(94,102,80,0.25)]
-            transition-colors duration-300
-            text-sm font-medium tracking-wide
+            bg-[#765587]
+            px-5 py-4
+            text-[13px]
+            font-medium
+            text-white
+            transition-colors
+            hover:bg-[#634B73]
+            pt-4
           "
+          style={{ marginTop: "36px" }}
         >
-          <MapPin size={18} strokeWidth={1.7} />
+          <Navigation
+            size={17}
+            strokeWidth={1.7}
+          />
 
           Ver ubicación
 
-          <ArrowUpRight
-            size={17}
-            className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
-          />
         </motion.a>
       </div>
-
-      {/* DETALLE DECORATIVO INFERIOR */}
-      <div
-        className="
-          absolute bottom-0 left-1/2
-          -translate-x-1/2
-          w-32 h-[3px]
-          bg-[#B89B5E]
-        "
-      />
     </motion.article>
   );
 };
@@ -253,129 +286,236 @@ const TarjetaEvento = ({
 // COMPONENTE PRINCIPAL
 // ==========================================
 
-const Celebracion = () => {
+export default function Celebracion() {
   return (
     <section
+      id="ubicacion"
       className="
-        relative
-        w-full
-        bg-[#5E6650]
-        py-20 sm:py-28
-        px-5 sm:px-8
+        relative w-full
         overflow-hidden
+        bg-[#8B709A]
+        px-5 py-20
+        sm:px-8 sm:py-28
+        md:py-32
       "
     >
-      {/* DECORACIÓN DE FONDO */}
+      {/* LÍNEAS DECORATIVAS SUPERIORES */}
       <div
+        aria-hidden="true"
         className="
-          absolute top-20 -left-32
-          w-80 h-80
-          rounded-full
-          border border-[#E7D7B1]/10
           pointer-events-none
+          absolute left-1/2 top-0
+          h-14 w-px
+          -translate-x-1/2
+          bg-[#D7BD91]
         "
       />
 
       <div
         className="
-          absolute bottom-20 -right-32
-          w-80 h-80
-          rounded-full
-          border border-[#E7D7B1]/10
-          pointer-events-none
+          relative z-10
+          mx-auto w-full
+          max-w-6xl
         "
-      />
-
-      <div className="relative z-10 max-w-6xl mx-auto">
-
+      >
         {/* ENCABEZADO */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="
+            mb-14 flex
+            flex-col items-center
+            text-center
+            sm:mb-16
+          "
         >
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="w-10 h-[1px] bg-[#E7D7B1]/60" />
-
-            <CalendarDays
-              size={19}
-              strokeWidth={1.4}
-              className="text-[#E7D7B1]"
-            />
-
-            <div className="w-10 h-[1px] bg-[#E7D7B1]/60" />
-          </div>
-
-          <p className="uppercase tracking-[0.4em] text-[#E7D7B1] text-xs sm:text-sm font-semibold">
-            Nuestra celebración
+          {/* ETIQUETA */}
+          <p
+            className="
+              mb-5
+              text-[11px]
+              font-medium
+              uppercase
+              tracking-[0.32em]
+              text-white
+            "
+          >
+            NUESTRA CELEBRACIÓN
           </p>
 
-          <h2 className="text-4xl sm:text-5xl font-playfair text-[#F7F4ED] mt-5">
-            Un día inolvidable
-          </h2>
-
-          {/* FECHA */}
-          <div className="mt-12 flex flex-col items-center">
-
-            <p className="text-[#E7D7B1] tracking-[0.35em] uppercase text-sm sm:text-base font-semibold">
-              {fechaCelebracion.dia}
-            </p>
-
-            <h3
+          {/* TÍTULO */}
+          <h2
+            className="
+              font-playfair
+              text-[43px]
+              font-normal
+              leading-tight
+              text-white
+              sm:text-[58px]
+              md:text-[72px]
+            "
+          >
+            Dónde será
+            <span
               className="
-                text-7xl sm:text-8xl md:text-9xl
+                ml-3
                 font-playfair
-                text-[#F7F4ED]
-                leading-none
-                mt-4
-                drop-shadow-lg
+                italic
+                text-[#E7D5B5]
               "
             >
-              {fechaCelebracion.fecha}
-            </h3>
+              nuestro día
+            </span>
+          </h2>
 
-            <p className="text-[#E7D7B1] text-xl sm:text-2xl tracking-[0.2em] mt-5">
-              {fechaCelebracion.mesAnio}
+          {/* FECHA EDITORIAL */}
+          <div
+            className="
+              mt-12 flex
+              items-center
+              justify-center
+              gap-5
+              sm:gap-8
+            "
+          >
+            {/* DÍA DE LA SEMANA */}
+            <div
+              className="
+                flex min-w-[65px]
+                flex-col items-center
+                gap-2
+              "
+            >
+              <span className="h-px w-full bg-[#D7BD91]" />
+
+              <p
+                className="
+                  text-[10px]
+                  font-semibold
+                  tracking-[0.14em]
+                  text-white
+                  sm:text-[12px]
+                "
+              >
+                {CONFIG.fecha.dia}
+              </p>
+
+              <span className="h-px w-full bg-[#D7BD91]" />
+            </div>
+
+            {/* NÚMERO */}
+            <p
+              className="
+                font-playfair
+                text-[100px]
+                leading-none
+                text-white
+                sm:text-[130px]
+                md:text-[155px]
+              "
+            >
+              {CONFIG.fecha.numero}
             </p>
 
+            {/* MES Y AÑO */}
+            <div
+              className="
+                flex min-w-[85px]
+                flex-col items-center
+                gap-2
+              "
+            >
+              <span className="h-px w-full bg-[#D7BD91]" />
+
+              <p
+                className="
+                  text-[10px]
+                  font-semibold
+                  tracking-[0.1em]
+                  text-white
+                  sm:text-[12px]
+                "
+              >
+                {CONFIG.fecha.mes}
+              </p>
+
+              <p
+                className="
+                  font-playfair
+                  text-[20px]
+                  text-white
+                  sm:text-[24px]
+                "
+              >
+                {CONFIG.fecha.anio}
+              </p>
+
+              <span className="h-px w-full bg-[#D7BD91]" />
+            </div>
           </div>
         </motion.div>
 
         {/* TARJETAS */}
         <div
           className="
-            grid grid-cols-1 lg:grid-cols-2
-            gap-10 lg:gap-8
+            grid grid-cols-1
             items-stretch
-            justify-items-center
+            gap-7
+            lg:grid-cols-2
+            lg:gap-8
           "
         >
-          <TarjetaEvento {...ceremonia} />
-          <TarjetaEvento {...recepcion} />
+          <TarjetaEvento
+            {...CONFIG.ceremonia}
+            destacada
+          />
+
+          <TarjetaEvento
+            {...CONFIG.recepcion}
+          />
         </div>
 
         {/* MENSAJE FINAL */}
-        <motion.p
+        <motion.div
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           className="
+            mt-14 flex
+            flex-col items-center
+            gap-5
             text-center
-            text-[#E7D7B1]
-            font-playfair italic
-            text-lg sm:text-xl
-            mt-16
           "
         >
-          Cada momento será más especial con tu presencia.
-        </motion.p>
+          <div className="flex items-center gap-4">
+            <span className="h-px w-10 bg-[#D7BD91]" />
+            <CalendarDays
+              size={18}
+              strokeWidth={1.3}
+              className="text-[#E7D5B5]"
+            />
+            <span className="h-px w-10 bg-[#D7BD91]" />
+          </div>
 
+          <p
+            className="
+              max-w-[500px]
+              font-playfair
+              text-[20px]
+              italic
+              leading-relaxed
+              text-white
+              sm:text-[24px]
+            "
+          >
+            Cada momento será más especial
+            con tu presencia.
+          </p>
+        </motion.div>
       </div>
     </section>
   );
-};
-
-export default Celebracion;
+}
