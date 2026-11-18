@@ -16,7 +16,7 @@ import {
 
 const CONFIG = {
   novios: "Antonio & Cristel",
-  imagen: "/portada.png",
+  imagen: "/portada.jpg",
   rutaInvitacion: "/",
 };
 

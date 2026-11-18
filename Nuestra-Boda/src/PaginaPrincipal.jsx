@@ -6,6 +6,8 @@ import Novios from "./componentes-encabezado/novios";
 import ConfirmacionAsistencia from "./componentes-encabezado/confirmacion";
 import Musica from "./componentes-encabezado/Musica";
 import CuentaRegresiva from "./componentes-encabezado/CuentaRegresiva";
+import FinalBoda from "./componentes-encabezado/ImagenFinal";
+
 
 export default function PaginaPrincipal() {
 
@@ -25,6 +27,8 @@ export default function PaginaPrincipal() {
       <Intinerario2/>
 
       <ConfirmacionAsistencia/>
+
+      <FinalBoda/>
     </div>
   );
 }

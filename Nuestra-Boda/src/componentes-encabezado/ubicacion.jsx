@@ -29,7 +29,7 @@ const CONFIG = {
     hora: "6:00 PM",
     lugar: "Iglesia Lucero de la Mañana",
     ubicacion:
-      "https://maps.app.goo.gl/WKyEbutUBPXYm1HT8",
+      "https://maps.app.goo.gl/P4k9V2qhg3ZKnJKw6",
     icono: Church,
   },
 
