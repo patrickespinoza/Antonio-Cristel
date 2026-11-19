@@ -89,7 +89,7 @@ const TarjetaEvento = ({
         overflow-hidden
         rounded-[20px]
         border border-[#E6DCE9]
-        bg-white
+        bg-[#FAEEDD]
         shadow-[0_12px_35px_rgba(45,25,55,0.12)]
       "
     >

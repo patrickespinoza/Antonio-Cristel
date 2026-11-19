@@ -363,7 +363,7 @@ export default function ConfirmacionAsistencia() {
       className="
         relative w-full
         overflow-hidden
-        bg-white
+        bg-[#FAEEDD]
         px-5
         pt-24 pb-32
         sm:px-8

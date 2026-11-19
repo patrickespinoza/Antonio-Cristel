@@ -65,7 +65,6 @@ const fadeUp = {
   },
 };
 
-
 // ==========================================
 // EVENTO DE LA LÍNEA DE TIEMPO
 // ==========================================
@@ -193,14 +192,12 @@ export default function Itinerario2() {
       className="
         relative w-full
         overflow-hidden
-        bg-white
+        bg-[#FAEEDD]
         px-5 py-20
         sm:px-8 sm:py-28
         lg:py-32
       "
     >
-    
-
       <div
         className="
           relative z-10

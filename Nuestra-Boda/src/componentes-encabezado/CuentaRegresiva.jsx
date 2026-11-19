@@ -273,7 +273,7 @@ export default function CuentaRegresiva() {
       className="
         relative w-full
         overflow-hidden
-        bg-white
+        bg-[#FAEEDD]
         px-5
         py-24
         sm:py-28

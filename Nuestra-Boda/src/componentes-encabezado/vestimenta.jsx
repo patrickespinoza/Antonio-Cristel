@@ -17,7 +17,7 @@ export default function Vestimenta() {
         items-center
         justify-center
         overflow-hidden
-        bg-white
+        bg-[#FAEEDD]
         px-3 py-10
         sm:px-6 sm:py-16
         lg:px-10 lg:py-20

@@ -17,8 +17,8 @@ const CONFIG = {
   ],
 
   padresNovia: [
-    "Isabel Guerra náhuatt",
-    "Abraham Montejo de la cruz",
+    "Isabel Guerra Náhuatt",
+    "Abraham Montejo De La Cruz",
   ],
 
   mensaje: "Con la bendición de nuestros padres",
@@ -276,7 +276,7 @@ export default function Novios() {
       className="
         relative w-full
         overflow-hidden
-        bg-white
+        bg-[#FAEEDD]
         px-5
         pt-20 pb-28
         sm:px-8
@@ -496,7 +496,7 @@ export default function Novios() {
 
         <motion.div
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          whileInView="visible"
           viewport={{ once: true }}
           transition={{
             duration: 1,
