@@ -19,7 +19,8 @@ const CONFIG = {
 
   novia: {
     nombre: "Cristel",
-    // Verifica este número: tiene 9 dígitos.
+    // Verificar: este número tiene 9 dígitos
+    // antes del prefijo de México.
     telefono: "52983348830",
   },
 
@@ -27,11 +28,41 @@ const CONFIG = {
     nombre: "Antonio",
     telefono: "529341026463",
   },
+
+  // ========================================
+  // FLORES DECORATIVAS
+  // ========================================
+
+  flores: {
+    imagen: "/flores.png",
+    mostrar: true,
+
+    anchoMovil: "135px",
+    anchoTablet: "210px",
+    anchoEscritorio: "300px",
+
+    opacidad: 0.85,
+
+    lateralMovil: "-10px",
+    lateralEscritorio: "-25px",
+
+    superiorMovil: "-15px",
+    superiorEscritorio: "-25px",
+
+    inferiorMovil: "-10px",
+    inferiorEscritorio: "-20px",
+
+    // Ajusta estos ángulos si la orientación
+    // original de tu PNG es diferente.
+    rotacionSuperiorDerecha: "0deg",
+    rotacionInferiorIzquierda: "180deg",
+    rotacionInferiorDerecha: "90deg",
+  },
 };
 
 // ==========================================
 // DECODIFICACIÓN INTEGRADA
-// COMPATIBLE CON EL GENERADOR
+// NO NECESITA ARCHIVOS UTILS
 // ==========================================
 
 const leerInvitacion = () => {
@@ -46,17 +77,16 @@ const leerInvitacion = () => {
       return null;
     }
 
-    // Convertir Base64URL a Base64.
     const base64 = id
       .replace(/-/g, "+")
       .replace(/_/g, "/");
 
-    const relleno =
-      "=".repeat((4 - (base64.length % 4)) % 4);
+    const relleno = "=".repeat(
+      (4 - (base64.length % 4)) % 4
+    );
 
     const binario = atob(base64 + relleno);
 
-    // Decodificar caracteres UTF-8.
     const bytes = Uint8Array.from(
       binario,
       (caracter) => caracter.charCodeAt(0)
@@ -67,7 +97,6 @@ const leerInvitacion = () => {
       { fatal: true }
     ).decode(bytes);
 
-    // Recuperar el JSON original.
     const textoOriginal = textoInvertido
       .split("")
       .reverse()
@@ -85,11 +114,7 @@ const leerInvitacion = () => {
       return null;
     }
 
-    // Solo devolvemos los pases.
-    // El nombre no se muestra ni se utiliza.
-    return {
-      pases,
-    };
+    return { pases };
   } catch (error) {
     console.error(
       "Error al decodificar la invitación:",
@@ -121,6 +146,128 @@ const fadeUp = {
 };
 
 // ==========================================
+// FLORES EN TRES ESQUINAS
+// ==========================================
+
+const FloresDecorativas = () => {
+  if (!CONFIG.flores.mostrar) {
+    return null;
+  }
+
+  return (
+    <>
+      <style>
+        {`
+          .wedly-confirmacion-flor {
+            position: absolute;
+            width: ${CONFIG.flores.anchoMovil};
+            height: auto;
+            opacity: ${CONFIG.flores.opacidad};
+            pointer-events: none;
+            user-select: none;
+            display: block;
+          }
+
+          .wedly-confirmacion-flor-superior {
+            top: ${CONFIG.flores.superiorMovil};
+            right: ${CONFIG.flores.lateralMovil};
+            transform: rotate(
+              ${CONFIG.flores.rotacionSuperiorDerecha}
+            );
+          }
+
+          .wedly-confirmacion-flor-inferior-izquierda {
+            bottom: ${CONFIG.flores.inferiorMovil};
+            left: ${CONFIG.flores.lateralMovil};
+            transform: rotate(
+              ${CONFIG.flores.rotacionInferiorIzquierda}
+            );
+          }
+
+          .wedly-confirmacion-flor-inferior-derecha {
+            bottom: ${CONFIG.flores.inferiorMovil};
+            right: ${CONFIG.flores.lateralMovil};
+            transform: rotate(
+              ${CONFIG.flores.rotacionInferiorDerecha}
+            );
+          }
+
+          @media (min-width: 640px) {
+            .wedly-confirmacion-flor {
+              width: ${CONFIG.flores.anchoTablet};
+            }
+          }
+
+          @media (min-width: 1024px) {
+            .wedly-confirmacion-flor {
+              width: ${CONFIG.flores.anchoEscritorio};
+            }
+
+            .wedly-confirmacion-flor-superior {
+              top: ${CONFIG.flores.superiorEscritorio};
+              right: ${CONFIG.flores.lateralEscritorio};
+            }
+
+            .wedly-confirmacion-flor-inferior-izquierda {
+              bottom: ${CONFIG.flores.inferiorEscritorio};
+              left: ${CONFIG.flores.lateralEscritorio};
+            }
+
+            .wedly-confirmacion-flor-inferior-derecha {
+              bottom: ${CONFIG.flores.inferiorEscritorio};
+              right: ${CONFIG.flores.lateralEscritorio};
+            }
+          }
+        `}
+      </style>
+
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute inset-0
+          z-0
+          overflow-hidden
+        "
+      >
+        {/* SUPERIOR DERECHA */}
+        <img
+          src={CONFIG.flores.imagen}
+          alt=""
+          draggable="false"
+          className="
+            wedly-confirmacion-flor
+            wedly-confirmacion-flor-superior
+          "
+        />
+
+        {/* INFERIOR IZQUIERDA */}
+        <img
+          src={CONFIG.flores.imagen}
+          alt=""
+          draggable="false"
+          className="
+            wedly-confirmacion-flor
+            wedly-confirmacion-flor-inferior-izquierda
+          "
+        />
+
+        {/* INFERIOR DERECHA */}
+        <img
+          src={CONFIG.flores.imagen}
+          alt=""
+          draggable="false"
+          className="
+            wedly-confirmacion-flor
+            wedly-confirmacion-flor-inferior-derecha
+          "
+        />
+      </div>
+    </>
+  );
+};
+
+// ==========================================
 // COMPONENTE PRINCIPAL
 // ==========================================
 
@@ -136,9 +283,9 @@ export default function ConfirmacionAsistencia() {
 
   const pasesAsignados = invitacion?.pases ?? 0;
 
-  // ==========================================
+  // ========================================
   // ENVIAR CONFIRMACIÓN POR WHATSAPP
-  // ==========================================
+  // ========================================
 
   const enviarConfirmacion = (destinatario) => {
     if (!invitacion) {
@@ -210,10 +357,6 @@ export default function ConfirmacionAsistencia() {
     );
   };
 
-  // ==========================================
-  // INTERFAZ
-  // ==========================================
-
   return (
     <section
       id="confirmacion"
@@ -221,11 +364,23 @@ export default function ConfirmacionAsistencia() {
         relative w-full
         overflow-hidden
         bg-white
-        px-5 py-20
-        sm:px-8 sm:py-28
-        lg:py-32
+        px-5
+        pt-24 pb-32
+        sm:px-8
+        sm:pt-28 sm:pb-40
+        lg:pt-36 lg:pb-44
       "
     >
+      {/* ======================================
+          FLORES EN TRES ESQUINAS
+      ====================================== */}
+
+      <FloresDecorativas />
+
+      {/* ======================================
+          CONTENIDO
+      ====================================== */}
+
       <div
         className="
           relative z-10
@@ -264,7 +419,6 @@ export default function ConfirmacionAsistencia() {
             "
           >
             Confirma tu
-
             <span
               className="
                 block italic
@@ -362,12 +516,7 @@ export default function ConfirmacionAsistencia() {
                 {pasesAsignados}
               </p>
 
-              <p
-                className="
-                  mt-3 text-sm
-                  text-[#765587]
-                "
-              >
+              <p className="mt-3 text-sm text-[#765587]">
                 {pasesAsignados === 1
                   ? "Pase asignado"
                   : "Pases asignados"}
@@ -419,7 +568,6 @@ export default function ConfirmacionAsistencia() {
                 sm:gap-5
               "
             >
-              {/* SÍ ASISTIRÉ */}
               <button
                 type="button"
                 onClick={() => {
@@ -448,7 +596,6 @@ export default function ConfirmacionAsistencia() {
                 Sí asistiré
               </button>
 
-              {/* NO ASISTIRÉ */}
               <button
                 type="button"
                 onClick={() => {
@@ -479,9 +626,9 @@ export default function ConfirmacionAsistencia() {
               </button>
             </div>
 
-            {/* ======================================
+            {/* ==================================
                 PASES A CONFIRMAR
-            ====================================== */}
+            ================================== */}
 
             {asistencia === "Sí asistiré" && (
               <motion.div
@@ -554,9 +701,9 @@ export default function ConfirmacionAsistencia() {
               </motion.div>
             )}
 
-            {/* ======================================
+            {/* ==================================
                 MENSAJE OPCIONAL
-            ====================================== */}
+            ================================== */}
 
             <div className="mt-8">
               <label
@@ -606,9 +753,9 @@ export default function ConfirmacionAsistencia() {
               </p>
             )}
 
-            {/* ======================================
+            {/* ==================================
                 BOTONES WHATSAPP
-            ====================================== */}
+            ================================== */}
 
             <div className="mt-10">
               <p
@@ -629,7 +776,7 @@ export default function ConfirmacionAsistencia() {
                   sm:grid-cols-2
                 "
               >
-                {/* WHATSAPP NOVIA */}
+                {/* WHATSAPP CRISTEL */}
                 <button
                   type="button"
                   onClick={() =>
@@ -647,15 +794,11 @@ export default function ConfirmacionAsistencia() {
                   "
                 >
                   <MessageCircle size={20} />
-
-                  <span>
-                    WhatsApp de Cristel
-                  </span>
-
+                  <span>WhatsApp de Cristel</span>
                   <Send size={15} />
                 </button>
 
-                {/* WHATSAPP NOVIO */}
+                {/* WHATSAPP ANTONIO */}
                 <button
                   type="button"
                   onClick={() =>
@@ -674,11 +817,7 @@ export default function ConfirmacionAsistencia() {
                   "
                 >
                   <MessageCircle size={20} />
-
-                  <span>
-                    WhatsApp de Antonio
-                  </span>
-
+                  <span>WhatsApp de Antonio</span>
                   <Send size={15} />
                 </button>
               </div>
@@ -697,7 +836,10 @@ export default function ConfirmacionAsistencia() {
           </motion.div>
         )}
 
-        {/* ORNAMENTO FINAL */}
+        {/* ======================================
+            ORNAMENTO FINAL
+        ====================================== */}
+
         <div
           className="
             mt-16 flex

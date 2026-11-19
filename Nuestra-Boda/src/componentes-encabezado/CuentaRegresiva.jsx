@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { CalendarDays, Heart, ArrowDown } from "lucide-react";
+import { CalendarDays, Heart } from "lucide-react";
 
 // ==========================================
 // CONFIGURACIÓN EDITABLE - WEDLY
@@ -13,6 +13,29 @@ const CONFIG = {
   titulo: "Falta poco",
   subtitulo: "PARA NUESTRO GRAN DÍA",
   fechaTexto: "26 DE DICIEMBRE DE 2026",
+
+  // ========================================
+  // CONFIGURACIÓN DE FLORES
+  // ========================================
+
+  flores: {
+    imagen: "/flores.png",
+
+    // Activar o desactivar flores
+    mostrar: true,
+
+    // Opacidad de las flores
+    opacidad: 0.85,
+
+    // Tamaños responsivos
+    anchoMovil: "145px",
+    anchoTablet: "220px",
+    anchoEscritorio: "310px",
+
+    // Distancia respecto a las esquinas
+    desplazamientoMovil: "-15px",
+    desplazamientoEscritorio: "-25px",
+  },
 };
 
 // ==========================================
@@ -46,7 +69,11 @@ const calcularTiempo = () => {
 // TARJETA DE TIEMPO
 // ==========================================
 
-const TarjetaTiempo = ({ valor, etiqueta, indice }) => {
+const TarjetaTiempo = ({
+  valor,
+  etiqueta,
+  indice,
+}) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 25 }}
@@ -113,6 +140,100 @@ const TarjetaTiempo = ({ valor, etiqueta, indice }) => {
 };
 
 // ==========================================
+// DECORACIÓN FLORAL
+// ==========================================
+
+const FloresEsquinas = () => {
+  if (!CONFIG.flores.mostrar) {
+    return null;
+  }
+
+  const esquinas = [
+    {
+      nombre: "superior-izquierda",
+      posicion: "top-0 left-0",
+      rotacion: "rotate-240",
+    },
+    {
+      nombre: "superior-derecha",
+      posicion: "top-0 right-0",
+      rotacion: "rotate-0",
+    },
+    {
+      nombre: "inferior-izquierda",
+      posicion: "bottom-0 left-0",
+      rotacion: "rotate-180",
+    },
+    {
+      nombre: "inferior-derecha",
+      posicion: "bottom-0 right-0",
+      rotacion: "rotate-90",
+    },
+  ];
+
+  return (
+    <>
+      <style>
+        {`
+          .wedly-flor-esquina {
+            position: absolute;
+            width: ${CONFIG.flores.anchoMovil};
+            height: auto;
+            pointer-events: none;
+            user-select: none;
+            opacity: ${CONFIG.flores.opacidad};
+          }
+
+          .wedly-flor-esquina img {
+            display: block;
+            width: 100%;
+            height: auto;
+          }
+
+          @media (min-width: 640px) {
+            .wedly-flor-esquina {
+              width: ${CONFIG.flores.anchoTablet};
+            }
+          }
+
+          @media (min-width: 1024px) {
+            .wedly-flor-esquina {
+              width: ${CONFIG.flores.anchoEscritorio};
+            }
+          }
+        `}
+      </style>
+
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute inset-0
+          z-0 overflow-hidden
+        "
+      >
+        {esquinas.map((esquina) => (
+          <div
+            key={esquina.nombre}
+            className={`
+              wedly-flor-esquina
+              ${esquina.posicion}
+            `}
+          >
+            <img
+              src={CONFIG.flores.imagen}
+              alt=""
+              draggable="false"
+              className={esquina.rotacion}
+            />
+          </div>
+        ))}
+      </div>
+    </>
+  );
+};
+
+// ==========================================
 // COMPONENTE PRINCIPAL
 // ==========================================
 
@@ -128,10 +249,22 @@ export default function CuentaRegresiva() {
   }, []);
 
   const unidades = [
-    { etiqueta: "DÍAS", valor: tiempo.dias },
-    { etiqueta: "HORAS", valor: tiempo.horas },
-    { etiqueta: "MINUTOS", valor: tiempo.minutos },
-    { etiqueta: "SEGUNDOS", valor: tiempo.segundos },
+    {
+      etiqueta: "DÍAS",
+      valor: tiempo.dias,
+    },
+    {
+      etiqueta: "HORAS",
+      valor: tiempo.horas,
+    },
+    {
+      etiqueta: "MINUTOS",
+      valor: tiempo.minutos,
+    },
+    {
+      etiqueta: "SEGUNDOS",
+      valor: tiempo.segundos,
+    },
   ];
 
   return (
@@ -142,12 +275,20 @@ export default function CuentaRegresiva() {
         overflow-hidden
         bg-white
         px-5
-        py-20
+        py-24
         sm:py-28
-        md:py-32
+        md:py-36
       "
     >
-      
+      {/* ======================================
+          FLORES EN LAS CUATRO ESQUINAS
+      ====================================== */}
+
+      <FloresEsquinas />
+
+      {/* ======================================
+          CONTENIDO PRINCIPAL
+      ====================================== */}
 
       <div
         className="
@@ -158,7 +299,10 @@ export default function CuentaRegresiva() {
           text-center
         "
       >
-        {/* ICONO SUPERIOR */}
+        {/* ======================================
+            ICONO SUPERIOR
+        ====================================== */}
+
         <motion.div
           initial={{ opacity: 0, y: -15 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -180,7 +324,10 @@ export default function CuentaRegresiva() {
           />
         </motion.div>
 
-        {/* TÍTULO */}
+        {/* ======================================
+            TÍTULO
+        ====================================== */}
+
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -199,7 +346,10 @@ export default function CuentaRegresiva() {
           {CONFIG.titulo}
         </motion.h2>
 
-        {/* SUBTÍTULO */}
+        {/* ======================================
+            SUBTÍTULO
+        ====================================== */}
+
         <p
           className="
             mt-3
@@ -214,8 +364,16 @@ export default function CuentaRegresiva() {
           {CONFIG.subtitulo}
         </p>
 
-        {/* ORNAMENTO */}
-        <div className="my-9 flex items-center gap-4">
+        {/* ======================================
+            ORNAMENTO
+        ====================================== */}
+
+        <div
+          className="
+            my-9 flex
+            items-center gap-4
+          "
+        >
           <span className="h-px w-12 bg-[#C8AA78]" />
 
           <Heart
@@ -227,13 +385,17 @@ export default function CuentaRegresiva() {
           <span className="h-px w-12 bg-[#C8AA78]" />
         </div>
 
-        {/* CONTADOR */}
+        {/* ======================================
+            CONTADOR
+        ====================================== */}
+
         {tiempo.terminado ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="
-              w-full rounded-[20px]
+              w-full
+              rounded-[20px]
               bg-[#F0E7F3]
               px-6 py-10
             "
@@ -271,8 +433,10 @@ export default function CuentaRegresiva() {
           </div>
         )}
 
-        
-        {/* MENSAJE INFERIOR */}
+        {/* ======================================
+            MENSAJE INFERIOR
+        ====================================== */}
+
         <p
           className="
             mt-8
@@ -290,10 +454,26 @@ export default function CuentaRegresiva() {
           a nuestro para siempre.
         </p>
 
-        {/* DIVISOR INFERIOR */}
-        <div className="mt-10 flex items-center gap-3">
+        {/* ======================================
+            DIVISOR INFERIOR
+        ====================================== */}
+
+        <div
+          className="
+            mt-10 flex
+            items-center gap-3
+          "
+        >
           <span className="h-px w-8 bg-[#C8AA78]" />
-          <span className="h-[5px] w-[5px] rotate-45 bg-[#C8AA78]" />
+
+          <span
+            className="
+              h-[5px] w-[5px]
+              rotate-45
+              bg-[#C8AA78]
+            "
+          />
+
           <span className="h-px w-8 bg-[#C8AA78]" />
         </div>
       </div>

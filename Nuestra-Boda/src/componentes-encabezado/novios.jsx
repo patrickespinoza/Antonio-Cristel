@@ -22,6 +22,32 @@ const CONFIG = {
   ],
 
   mensaje: "Con la bendición de nuestros padres",
+
+  // ========================================
+  // FLORES INFERIORES
+  // ========================================
+
+  flores: {
+    imagen: "/flores.png",
+
+    mostrar: true,
+
+    // Tamaño según dispositivo
+    anchoMovil: "145px",
+    anchoTablet: "220px",
+    anchoEscritorio: "310px",
+
+    // Distancia desde los bordes
+    // Los valores negativos las desplazan
+    // parcialmente fuera de la sección.
+    lateralMovil: "-10px",
+    lateralEscritorio: "-5px",
+
+    inferiorMovil: "-0px",
+    inferiorEscritorio: "-15px",
+
+    opacidad: 0.9,
+  },
 };
 
 // ==========================================
@@ -33,6 +59,7 @@ const aparecer = {
     opacity: 0,
     y: 30,
   },
+
   visible: {
     opacity: 1,
     y: 0,
@@ -40,10 +67,107 @@ const aparecer = {
 };
 
 // ==========================================
+// FLORES DECORATIVAS INFERIORES
+// ==========================================
+
+const FloresInferiores = () => {
+  if (!CONFIG.flores.mostrar) {
+    return null;
+  }
+
+  return (
+    <>
+      <style>
+        {`
+          .wedly-padres-flor {
+            position: absolute;
+            bottom: ${CONFIG.flores.inferiorMovil};
+            width: ${CONFIG.flores.anchoMovil};
+            height: auto;
+            opacity: ${CONFIG.flores.opacidad};
+            pointer-events: none;
+            user-select: none;
+          }
+
+          .wedly-padres-flor-izquierda {
+            left: ${CONFIG.flores.lateralMovil};
+            transform: rotate(180deg);
+            transform-origin: center;
+          }
+
+          .wedly-padres-flor-derecha {
+            right: ${CONFIG.flores.lateralMovil};
+            transform: rotate(90deg);
+            transform-origin: center;
+          }
+
+          @media (min-width: 640px) {
+            .wedly-padres-flor {
+              width: ${CONFIG.flores.anchoTablet};
+            }
+          }
+
+          @media (min-width: 1024px) {
+            .wedly-padres-flor {
+              width: ${CONFIG.flores.anchoEscritorio};
+              bottom: ${CONFIG.flores.inferiorEscritorio};
+            }
+
+            .wedly-padres-flor-izquierda {
+              left: ${CONFIG.flores.lateralEscritorio};
+            }
+
+            .wedly-padres-flor-derecha {
+              right: ${CONFIG.flores.lateralEscritorio};
+            }
+          }
+        `}
+      </style>
+
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute inset-0
+          z-0
+          overflow-hidden
+        "
+      >
+        {/* FLOR INFERIOR IZQUIERDA */}
+        <img
+          src={CONFIG.flores.imagen}
+          alt=""
+          draggable="false"
+          className="
+            wedly-padres-flor
+            wedly-padres-flor-izquierda
+          "
+        />
+
+        {/* FLOR INFERIOR DERECHA */}
+        <img
+          src={CONFIG.flores.imagen}
+          alt=""
+          draggable="false"
+          className="
+            wedly-padres-flor
+            wedly-padres-flor-derecha
+          "
+        />
+      </div>
+    </>
+  );
+};
+
+// ==========================================
 // BLOQUE DE PADRES
 // ==========================================
 
-const BloquePadres = ({ titulo, nombres, delay = 0 }) => {
+const BloquePadres = ({
+  titulo,
+  nombres,
+  delay = 0,
+}) => {
   return (
     <motion.div
       variants={aparecer}
@@ -56,17 +180,30 @@ const BloquePadres = ({ titulo, nombres, delay = 0 }) => {
         ease: "easeOut",
       }}
       className="
-        flex w-full flex-col
-        items-center
+        flex w-full
+        flex-col items-center
         px-3 py-9
         text-center
         sm:px-7
       "
     >
       {/* ORNAMENTO SUPERIOR */}
-      <div className="mb-7 flex items-center gap-3">
+      <div
+        className="
+          mb-7 flex
+          items-center gap-3
+        "
+      >
         <span className="h-px w-9 bg-[#C8AA78]" />
-        <span className="h-[5px] w-[5px] rotate-45 bg-[#8B709A]" />
+
+        <span
+          className="
+            h-[5px] w-[5px]
+            rotate-45
+            bg-[#8B709A]
+          "
+        />
+
         <span className="h-px w-9 bg-[#C8AA78]" />
       </div>
 
@@ -86,7 +223,12 @@ const BloquePadres = ({ titulo, nombres, delay = 0 }) => {
       </h3>
 
       {/* NOMBRES */}
-      <div className="flex flex-col items-center gap-5">
+      <div
+        className="
+          flex flex-col
+          items-center gap-5
+        "
+      >
         {nombres.map((nombre, index) => (
           <React.Fragment key={index}>
             <p
@@ -135,12 +277,23 @@ export default function Novios() {
         relative w-full
         overflow-hidden
         bg-white
-        px-5 py-20
-        sm:px-8 sm:py-28
-        md:py-32
+        px-5
+        pt-20 pb-28
+        sm:px-8
+        sm:pt-28 sm:pb-36
+        md:pt-32 md:pb-44
       "
     >
-      {/* LÍNEAS DECORATIVAS SUPERIORES */}
+      {/* ======================================
+          FLORES INFERIORES
+      ====================================== */}
+
+      <FloresInferiores />
+
+      {/* ======================================
+          LÍNEA DECORATIVA SUPERIOR
+      ====================================== */}
+
       <div
         aria-hidden="true"
         className="
@@ -152,7 +305,10 @@ export default function Novios() {
         "
       />
 
-      {/* CONTENIDO */}
+      {/* ======================================
+          CONTENIDO
+      ====================================== */}
+
       <div
         className="
           relative z-10
@@ -180,7 +336,10 @@ export default function Novios() {
           NUESTRA BODA
         </motion.p>
 
-        {/* NOMBRES DE LOS NOVIOS */}
+        {/* ======================================
+            NOMBRES DE LOS NOVIOS
+        ====================================== */}
+
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -216,7 +375,10 @@ export default function Novios() {
           {CONFIG.novia}
         </motion.h2>
 
-        {/* DIVISOR */}
+        {/* ======================================
+            DIVISOR
+        ====================================== */}
+
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: 100 }}
@@ -226,13 +388,15 @@ export default function Novios() {
             delay: 0.3,
           }}
           className="
-            mt-9
-            h-px
+            mt-9 h-px
             bg-[#C8AA78]
           "
         />
 
-        {/* MENSAJE DE BENDICIÓN */}
+        {/* ======================================
+            MENSAJE DE BENDICIÓN
+        ====================================== */}
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -269,23 +433,27 @@ export default function Novios() {
           </p>
         </motion.div>
 
-        {/* SEPARADOR PRINCIPAL */}
+        {/* ======================================
+            SEPARADOR PRINCIPAL
+        ====================================== */}
+
         <div
           className="
-            mt-12
-            h-px w-full
-            max-w-[760px]
+            mt-12 h-px
+            w-full max-w-[760px]
             bg-[#E5D8EA]
             sm:mt-16
           "
         />
 
-        {/* PADRES */}
+        {/* ======================================
+            PADRES
+        ====================================== */}
+
         <div
           className="
-            mt-5
-            grid w-full
-            max-w-[900px]
+            mt-5 grid
+            w-full max-w-[900px]
             grid-cols-1
             items-start
             gap-2
@@ -322,7 +490,10 @@ export default function Novios() {
           </div>
         </div>
 
-        {/* ORNAMENTO FINAL */}
+        {/* ======================================
+            ORNAMENTO FINAL
+        ====================================== */}
+
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
