@@ -145,11 +145,11 @@ const EventoItinerario = ({ evento, index }) => {
         <h3
           className="
             font-playfair
-            text-[25px]
+            text-[30px]
             font-normal
             leading-tight
             text-[#211A25]
-            sm:text-[31px]
+            sm:text-[36px]
           "
         >
           {evento.titulo}
@@ -159,10 +159,10 @@ const EventoItinerario = ({ evento, index }) => {
         <p
           className="
             mt-3
-            text-[13px]
+            text-[16px]
             leading-relaxed
             text-[#6F6573]
-            sm:text-[15px]
+            sm:text-[18px]
           "
         >
           {evento.descripcion}
@@ -341,10 +341,10 @@ export default function Itinerario2() {
             className="
               mt-6
               font-playfair
-              text-[20px]
+              text-[23px]
               italic
               text-[#765587]
-              sm:text-[23px]
+              sm:text-[26px]
             "
           >
             Gracias por ser parte de nuestro día.
